@@ -1,0 +1,21 @@
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  width: 450px;
+
+  h2 {
+    margin: 10px 0;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.auth-container {
+  display: flex;
+  justify-content: space-around;
+  width: 1000px;
+  margin: 30px auto;
+}
