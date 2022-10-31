@@ -5,7 +5,6 @@ import Button from "../../components/button/Button.component";
 import {
   signInEmailAndPassword,
   signInWithGooglePopup,
-  getUserDocFromAuth,
 } from "../../utils/firebase/firebase.utils";
 
 const SignInForm = () => {
@@ -26,8 +25,9 @@ const SignInForm = () => {
     e.preventDefault();
 
     try {
-      const data = await signInEmailAndPassword(email, password);
-      console.log(data);
+      await signInEmailAndPassword(email, password);
+      setEmail("");
+      setPassword("");
     } catch (err) {
       if (err.code === "auth/wrong-password") {
         alert("Incorrect password");
@@ -40,8 +40,7 @@ const SignInForm = () => {
   };
 
   const logIn = async function () {
-    const response = await signInWithGooglePopup();
-    await getUserDocFromAuth(response.user);
+    await signInWithGooglePopup();
   };
 
   return (
