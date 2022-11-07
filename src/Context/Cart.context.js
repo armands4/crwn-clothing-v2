@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 const addItemCart = (cartItems, product) => {
   const exists = cartItems.find((item) => item.id === product.id);
@@ -36,23 +36,30 @@ export const CartContext = createContext({
   addItem: () => {},
   removeItem: () => {},
   deleteItem: () => {},
+  cartTotal: 0,
+  priceTotal: 0,
 });
 
 export const CartProvider = (props) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItem] = useState([]);
+  const [priceTotal, setPriceTotal] = useState(0);
 
-  const addItem = (product) => {
-    setCartItem(addItemCart(cartItems, product));
-  };
+  useEffect(() => {
+    const total = cartItems.reduce((sum, curr) => {
+      return sum + curr.price * curr.quantity;
+    }, 0);
 
-  const removeItem = (product) => {
+    setPriceTotal(total);
+  }, [cartItems]);
+
+  const addItem = (product) => setCartItem(addItemCart(cartItems, product));
+
+  const removeItem = (product) =>
     setCartItem(removeItemCart(cartItems, product));
-  };
 
-  const deleteItem = (product) => {
+  const deleteItem = (product) =>
     setCartItem(deleteItemCart(cartItems, product));
-  };
 
   const cartTotal = cartItems.reduce((prev, curr) => {
     return prev + curr.quantity;
@@ -67,6 +74,7 @@ export const CartProvider = (props) => {
     cartTotal,
     removeItem,
     deleteItem,
+    priceTotal,
   };
 
   return (
